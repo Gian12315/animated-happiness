@@ -1,4 +1,8 @@
 <?php
+require_once("vendor/autoload.php");
+require_once("connection.php");
+
+
 class block_sentimentsdata extends block_base {
     public function init() {
         $this->title = get_string('sentimentsdata', 'block_sentimentsdata');
@@ -15,8 +19,16 @@ class block_sentimentsdata extends block_base {
         $output = "";
 
         $conn = getConnection();
+
+        echo "Eso tilin";
+
+        $res = getTablesWithJoin($conn);
+
+        while ($row = mysqli_fetch_assoc($res)) {
+            $output = $output . $row['id'] . " " . $row['sentiment'] . "<br/>";
+        }
 	
-	$this->content->text = getData();
+	    $this->content->text = $output;
 	
         $this->content->footer = "Footer here...";
 
