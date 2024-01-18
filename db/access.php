@@ -1,7 +1,7 @@
 <?php
     $capabilities = array(
 
-    'block/simplecamera:myaddinstance' => array(
+    'block/sentimentsdata:myaddinstance' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
         'archetypes' => array(
@@ -11,7 +11,7 @@
         'clonepermissionsfrom' => 'moodle/my:manageblocks'
     ),
 
-    'block/simplecamera:addinstance' => array(
+    'block/sentimentsdata:addinstance' => array(
         'riskbitmask' => RISK_SPAM | RISK_XSS,
 
         'captype' => 'write',
