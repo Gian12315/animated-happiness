@@ -21,12 +21,37 @@ class block_sentimentsdata extends block_base {
         $conn = getConnection();
 
         echo "Eso tilin";
+        
+        $output = '
+  <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+  <h3>Resultados de los sentimientos</h3>
+  <span class="htmx-indicator">
+    Buscando...
+  </span>
+  </h3>
 
-        $res = getTablesWithJoin($conn);
+  <input class="form-control" type="search"
+         name="search" placeholder="Busca..."
+         hx-post="/moodle/blocks/sentimentsdata/api.php"
+         hx-trigger="input changed delay:500ms, search"
+         hx-target="#sentiments-data"
+         hx-indicator=".htmx-indicator">
 
-        while ($row = mysqli_fetch_assoc($res)) {
-            $output = $output . $row['id'] . " " . $row['sentiment'] . "<br/>";
-        }
+  <table class="table">
+  <thead>
+  <tr>
+  <th> Username </th>
+  <th> Sentiment </th>
+  <th> Page </th>
+  <th> Timestamp </th>
+  </tr>
+  </thead>
+  <tbody id="sentiments-data">
+  </tbody>
+  </table>
+';
+
+        
 	
 	    $this->content->text = $output;
 	

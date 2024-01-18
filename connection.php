@@ -17,7 +17,7 @@ function getConnection() {
    return $connection;
 }
 
-function getTablesWithJoin($connection) {
+function getTablesWithJoin($connection, $search) {
     // $stmt = $connection->prepare("SELECT * FROM mdl_block_simplecamera_analysis");
     // if (!$stmt) {
     //     return "Something went wrong";
@@ -26,11 +26,18 @@ function getTablesWithJoin($connection) {
     // $res = $stmt->get_result()->fetch_assoc();
     // return $res ? $res : -1;
 
-    $stmt = $connection->query("SELECT * FROM mdl_block_simplecamera_analysis LIMIT 10");
+    $stmt = $connection->prepare(
+        "SELECT mdl_user.username, mdl_block_simplecamera_analysis.sentiment, mdl_block_simplecamera_details.page, mdl_block_simplecamera_details.timestamp
+FROM mdl_block_simplecamera_details
+INNER JOIN mdl_block_simplecamera_analysis ON mdl_block_simplecamera_analysis.details = mdl_block_simplecamera_details.id
+INNER JOIN mdl_user ON mdl_user.id = mdl_block_simplecamera_details.user_id WHERE mdl_user.username LIKE ? LIMIT 10");
     if (!$stmt) {
         return "Something went wrong";
     }
-    $res = $stmt;
-    return $res ? $res : -1;
+    $param = "%" . $search . "%";
+    $stmt->bind_param("s", $param);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    return $res;
 
 }

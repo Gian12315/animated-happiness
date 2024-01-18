@@ -1,0 +1,8 @@
+Run this:
+
+#+begin_src sh
+  composer require vlucas/phpdotenv
+#+end_src
+
+
+Don't forget the .env file.
