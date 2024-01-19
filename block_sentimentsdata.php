@@ -1,6 +1,6 @@
 <?php
 require_once("vendor/autoload.php");
-require_once("connection.php");
+require_once("api.php");
 
 
 class block_sentimentsdata extends block_base {
@@ -17,27 +17,22 @@ class block_sentimentsdata extends block_base {
         // $this->content->text = "The content of our SimpleHTML block!<b>Hello</b>";
 
         $output = "";
-
-        $conn = getConnection();
-
-        echo "Eso tilin";
         
+        $contenido = getHTML();
+                
         $output = '
-  <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
+  
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+
   <h3>Resultados de los sentimientos</h3>
   <span class="htmx-indicator">
     Buscando...
   </span>
   </h3>
 
-  <input class="form-control" type="search"
-         name="search" placeholder="Busca..."
-         hx-post="/moodle/blocks/sentimentsdata/api.php"
-         hx-trigger="input changed delay:500ms, search"
-         hx-target="#sentiments-data"
-         hx-indicator=".htmx-indicator">
-
-  <table class="table">
+  <table class="table" id="myTable">
   <thead>
   <tr>
   <th> Username </th>
@@ -46,9 +41,18 @@ class block_sentimentsdata extends block_base {
   <th> Timestamp </th>
   </tr>
   </thead>
-  <tbody id="sentiments-data">
+  <tbody>' . $contenido . '
   </tbody>
   </table>
+
+<script>
+$(document).ready(function() {
+    var table = $("#myTable").DataTable();
+
+    var data = table.rows().data();
+
+});
+</script>
 ';
 
         

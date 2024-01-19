@@ -30,14 +30,15 @@ function getTablesWithJoin($connection, $search) {
         "SELECT mdl_user.username, mdl_block_simplecamera_analysis.sentiment, mdl_block_simplecamera_details.page, mdl_block_simplecamera_details.timestamp
 FROM mdl_block_simplecamera_details
 INNER JOIN mdl_block_simplecamera_analysis ON mdl_block_simplecamera_analysis.details = mdl_block_simplecamera_details.id
-INNER JOIN mdl_user ON mdl_user.id = mdl_block_simplecamera_details.user_id WHERE mdl_user.username LIKE ? LIMIT 10");
+INNER JOIN mdl_user ON mdl_user.id = mdl_block_simplecamera_details.user_id WHERE mdl_user.username LIKE ?");
     if (!$stmt) {
         return "Something went wrong";
     }
     $param = "%" . $search . "%";
+    $param = "%%";
     $stmt->bind_param("s", $param);
     $stmt->execute();
     $res = $stmt->get_result();
     return $res;
-
 }
+
