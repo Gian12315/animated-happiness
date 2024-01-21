@@ -14,8 +14,6 @@ class block_sentimentsdata extends block_base {
         }
 
         $this->content = new stdClass;
-        // $this->content->text = "The content of our SimpleHTML block!<b>Hello</b>";
-
         $output = "";
         
         $contenido = getHTML();
@@ -25,12 +23,12 @@ class block_sentimentsdata extends block_base {
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
   
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+<script src="https://code.jscharting.com/latest/jscharting.js"></script> 
+<script src="https://code.jscharting.com/latest/modules/types.js"></script> 
 
   <h3>Resultados de los sentimientos</h3>
-  <span class="htmx-indicator">
-    Buscando...
-  </span>
-  </h3>
+<div id="chartDiv" style="max-width: 500px; height:
+300px;" ></div>
 
   <table class="table" id="myTable">
   <thead>
@@ -49,8 +47,47 @@ class block_sentimentsdata extends block_base {
 $(document).ready(function() {
     var table = $("#myTable").DataTable();
 
-    var data = table.rows().data();
 
+    function updateTable() {
+    var data = table.rows({search: "applied"}).data();
+    var sentiments_count = {};
+
+    for (var i = 0; i < data.length; i++) {
+    var ele = data[i];
+    if (sentiments_count[ele[1]]) {
+        sentiments_count[ele[1]] += 1;
+    } else {
+        sentiments_count[ele[1]] = 1;
+    }
+    };
+
+    var pointss = [];
+
+    for (const [key, value] of Object.entries(sentiments_count)) {
+      pointss.push({name: key, y: value});
+    }
+
+return pointss;
+    }
+
+let chart = new JSC.Chart("chartDiv", {
+   debug: true,
+   type: "pie",
+   series: [
+      {points:updateTable()}
+   ]
+});
+
+table.on( "search.dt", function () {
+chart = new JSC.Chart("chartDiv", {
+   debug: true,
+   type: "pie",
+   series: [
+      {points:updateTable()}
+   ]
+ });
+console.log("IT SHOULD CHANGE!");
+});
 });
 </script>
 ';
@@ -59,7 +96,7 @@ $(document).ready(function() {
 	
 	    $this->content->text = $output;
 	
-        $this->content->footer = "Footer here...";
+        $this->content->footer = "";
 
         return $this->content;
     }
