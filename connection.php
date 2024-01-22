@@ -1,7 +1,7 @@
 <?php
 require_once(__DIR__ . '../../../config.php');
     
-function getTablesWithJoin() {
+function getSentimentsRecords() {
     global $DB;
 
     $records = $DB->get_recordset_sql(
