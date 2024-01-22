@@ -70,7 +70,6 @@ return pointss;
     }
 
 let chart = new JSC.Chart("chartDiv", {
-   debug: true,
    type: "pie",
    series: [
       {points:updateTable()}
@@ -79,13 +78,11 @@ let chart = new JSC.Chart("chartDiv", {
 
 table.on( "search.dt", function () {
 chart = new JSC.Chart("chartDiv", {
-   debug: true,
    type: "pie",
    series: [
       {points:updateTable()}
    ]
  });
-console.log("IT SHOULD CHANGE!");
 });
 });
 </script>
