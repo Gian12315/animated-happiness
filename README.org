@@ -1,8 +1,3 @@
-Run this:
+Copy this to the blocks route in your Moodle server.
 
-#+begin_src sh
-  composer require vlucas/phpdotenv
-#+end_src
-
-
-Don't forget the .env file.
+Requires: [[https://github.com/Gian12315/refactored-robot][Sentiments Camera]]
