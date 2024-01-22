@@ -1,17 +1,14 @@
-n<?php
-require_once("vendor/autoload.php");
+<?php
 require_once("connection.php");
 
 function getHTML() {
-    $connection = getConnection();
     $output = "";
-    $res  = getTablesWithJoin($connection, "");
-    if ($res) {
-        while($row = $res->fetch_assoc()) {
-            // $output = $output . "<tr><td>" . $row['page'] . "</td></tr>";
-            $output = "{$output}<tr><td>{$row['username']}</td><td>{$row['sentiment']}</td><td>{$row['page']}</td><td>{$row['timestamp']}</td></tr>";
-        }
-        $res->free();
+    $records  = getTablesWithJoin();
+
+    foreach($records as $record) {
+        $output = "{$output}<tr><td>{$record->username}</td><td>{$record->sentiment}</td><td>{$record->page}</td><td>{$record->timestamp}</td></tr>";
     }
+
+    $records->close();
     return $output;
 }
